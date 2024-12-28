@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/book_title_label" />
+
+    <EditText
+        android:id="@+id/book_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/book_title_hint"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:maxLength="30"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/book_number_label" />
+
+    <EditText
+        android:id="@+id/book_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/book_number_hint"
+        android:importantForAutofill="no"
+        android:inputType="numberSigned"
+        android:maxLength="3"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/book_edition_label" />
+
+    <EditText
+        android:id="@+id/book_edition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/book_edition_hint"
+        android:importantForAutofill="no"
+        android:inputType="numberSigned"
+        android:maxLength="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/book_solved_label" />
+
+    <CheckBox
+        android:id="@+id/book_solved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/book_solved_hint" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:text="@string/book_date_label" />
+
+    <Button
+        android:id="@+id/book_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Wed March 11 11:56 EST 2024" />
+
+    <!-- Tänne photon tai näyttäminen isompana
+    ja poiston/changen mahdollisuus -->
+
+    <ImageView
+        android:id="@+id/book_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/photo_imageview"
+        android:scaleType="centerInside"
+        android:cropToPadding="true"
+        android:background="@color/black"/>
+
+</LinearLayout>

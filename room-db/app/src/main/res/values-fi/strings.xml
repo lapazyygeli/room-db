@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tietokanta</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_number">numero</string>
+    <string name="input_name">nimi</string>
+    <string name="input_edition">painos</string>
+    <string name="input_date">Valitse Target-päivämäärä</string>
+    <string name="add_new">LISÄÄ UUSI</string>
+    <string name="delete_first">POISTA EKA</string>
+    <string name="sort_by">LAJITTELE</string>
+    <string name="book_title_label">Kirjan otsikko</string>
+    <string name="book_title_hint">kirjan otsikko</string>
+    <string name="book_date_label">Päivämäärä</string>
+    <string name="book_solved_label">Oletko lukenut kirjan?</string>
+    <string name="book_number_label">Kirjan Numero</string>
+    <string name="book_number_hint">kirjan numero</string>
+    <string name="book_edition_label">Kirjan Painos</string>
+    <string name="book_edition_hint">kirjan painos</string>
+    <string name="book_solved_hint">- Kyllä / Ei</string>
+    <string name="book_num">Kirjan Numero</string>
+    <string name="book_title">Kirjan Otsikko</string>
+    <string name="book_num_placeholder_ordinal">%s.</string>
+    <string name="sorting_strategy">Lajittelu Strategia</string>
+    <string name="sort_by_lowercase">Lajittele:</string>
+    <string name="name_asc">Nimi (Kasvava)</string>
+    <string name="name_desc">Nimi (Laskeva)</string>
+    <string name="number_asc">Numero (Kasvava)</string>
+    <string name="number_desc">Numero (Laskeva)</string>
+    <string name="reset_selection">Resetoi</string>
+    <string name="apply">Käytä</string>
+    <string name="take_a_photo">Ota kuva</string>
+    <string name="a_photo_has_been_taken_successfully">Kuva otettiin.\nLöydät sen, kun lisäät uuden kortin (LISÄÄ UUSI)</string>
+    <string name="photo_imageview">kuva imageview</string>
+    <string name="bigger_picture">isompi kuva</string>
+    <string name="delete_book">Poista kirja</string>
+    <string name="are_u_sure_delete_book">Oletko varma, että haluat poistaa tämän kirjan?</string>
+    <string name="yes">Kyllä</string>
+    <string name="no">Ei</string>
+</resources>

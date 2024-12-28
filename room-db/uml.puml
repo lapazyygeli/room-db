@@ -1,0 +1,221 @@
+@startuml
+
+package application {
+    class BookApplication
+}
+
+package data {
+    package database {
+        interface BookDao {
+            +getBooks(): Flow<List<Book>>
+            +getBook(uuid: UUID): Book
+            +getNthBookByTimePosition(nth: Int): Book?
+            +addBook(book: Book)
+            +removeBook(book: Book)
+            +updateBook(book: Book)
+        }
+
+        abstract class BookDataBase {
+            +bookDAO(): BookDao
+        }
+
+        class BookTypeConverters {
+            +fromDate(date: Date): Long
+            +toDate(millis: Long): Date
+        }
+    }
+
+    package model {
+        class Book {
+            +id: UUID
+            +num: Int
+            +title: String
+            +edition: Int
+            +date: Date
+            +isRead: Boolean
+            +objectCreationDate: Date
+            +photoFileName: String?
+        }
+    }
+
+    package repository {
+        class BookRepository {
+            +getBooks(): Flow<List<Book>>
+            +getBook(id: UUID): Book
+            +addBook(book: Book)
+            +removeBook(book: Book)
+            +updateBook(book: Book)
+            -database: BookDataBase
+            +initialize(context: Context)
+            +getInstance(): BookRepository
+
+            @OptIn(DelicateCoroutinesApi::class)
+            private constructor(context: Context, private val coroutineScope: CoroutineScope = GlobalScope)
+        }
+    }
+}
+
+package ui {
+    package activity {
+        class MainActivity {
+            -_binding: ActivityMainBinding?
+            +binding: ActivityMainBinding
+        }
+    }
+
+    package adapter {
+        class BookListAdapter {
+            -books: List<Book>
+            -onBookClicked: (bookId: UUID) -> Unit
+        }
+        class BookViewHolder {
+            -binding: ListItemBookBinding
+            +bind(book: Book, onBookClicked: (crimeId: UUID) -> Unit)
+        }
+    }
+
+    package fragment {
+        class BookDetailFragment {
+            -_binding: FragmentBookDetailBinding?
+            +binding: FragmentBookDetailBinding
+            -args: BookDetailFragmentArgs
+            -bookDetailViewModel: BookDetailViewModel
+        }
+
+        class BookListFragment {
+            -bookListViewModel: BookListViewModel
+            -_binding: FragmentBookListBinding?
+            +binding: FragmentBookListBinding
+        }
+
+        class DatePickerFragment {
+            +REQUEST_KEY_DATE_DETAIL_FRAG: String
+            +BUNDLE_KEY_DATE: String
+            -args: DatePickerFragmentArgs
+        }
+
+        class DatePickerFragmentWithoutNavLib {
+            +REQUEST_KEY_DATE_INPUT_FRAG: String
+            +REQUEST_KEY_DATE: String
+            +BUNDLE_KEY_DATE: String
+            +BOOK_DATE: String
+            +DATE_PICKER_FRAG_TAG: String
+        }
+
+        class FilterBottomSheetFragment {
+            +TAG: String
+            -_binding: FragmentFilterBottomSheetBinding?
+            +binding: FragmentFilterBottomSheetBinding
+            -viewModel: FilterViewModel
+            -bookListViewModel: BookListViewModel
+        }
+
+        class ImageDialogFragment {
+            +TAG: String
+            -_binding: ImageViewBinding?
+            +binding: ImageViewBinding
+            -imageName: String
+        }
+
+        class InputFragment {
+            -inputViewModel: InputViewModel
+            -uiViewModel: UiViewModel
+            -_binding: FragmentInputBinding?
+            +binding: FragmentInputBinding
+            -takePhoto: ActivityResultLauncher<Uri>
+        }
+
+        class MainFragment {
+            -_binding: FragmentMainBinding?
+            +binding: FragmentMainBinding
+        }
+    }
+
+    package viewmodel {
+        class BookDetailViewModel(bookId) {
+            -bookRepository: BookRepository
+            -_book: MutableStateFlow<Book?>
+            +book: StateFlow<Book?>
+            +updateBook(onUpdate: (Book) -> Book)
+        }
+
+        class BookDetailViewModelFactory(bookId) extends ViewModelProvider.Factory {
+            +create(modelClass: Class<T>): T
+        }
+
+        class BookListViewModel {
+            -bookRepository: BookRepository
+            -sortingStrategy: SortingStrategy
+            -_books: MutableStateFlow<List<Book>>
+            +books: StateFlow<List<Book>>
+            +sortBooksBy(sortingStrategy: SortingStrategy)
+        }
+
+        class FilterViewModel {
+            -sortingStrategy: SortingStrategy
+        }
+
+        class InputViewModel {
+            -menuProvider: CameraMenuProvider?
+            -bookRepository: BookRepository
+            -num: Int
+            -title: String
+            -edition: Int
+            -date: Date
+            -photoName: String
+            -book: Book
+            +addBook(book: Book)
+            +removeNthBook(nth: Int)
+            +resetInputProperties()
+        }
+
+        class UiViewModel(application) extends AndroidViewModel {
+            -dateText: String
+        }
+    }
+}
+
+package utils {
+    package sorting {
+        interface SortingStrategy {
+            +sort(books: List<Book>): List<Book>
+        }
+        class NameAscSortingStrategy
+        class NameDescSortingStrategy
+        class NumAscSortingStrategy
+        class NumDescSortingStrategy
+        class OriginalSortingStrategy
+    }
+    class CameraMenuProvider {
+        -inputViewModel: InputViewModel
+        -activity: Activity
+        -context: Context
+        -takePhoto: ActivityResultLauncher<Uri>
+        +onCreateMenu(menu: Menu, menuInflater: MenuInflater)
+        +onPrepareMenu(menu: Menu)
+        +onMenuItemSelected(menuItem: MenuItem): Boolean
+        -canResolveIntent(intent: Intent): Boolean
+    }
+}
+
+database.BookDataBase --> database.BookDao : has
+database.BookDao --> model.Book : returns
+repository.BookRepository --> database.BookDataBase : uses
+repository.BookRepository --> model.Book : manages
+ui.adapter.BookListAdapter --> model.Book : contains
+ui.adapter.BookViewHolder --> model.Book : binds
+ui.fragment.BookDetailFragment --> ui.viewmodel.BookDetailViewModel : uses
+ui.fragment.BookListFragment --> ui.viewmodel.BookListViewModel : uses
+ui.viewmodel.BookDetailViewModel --> repository.BookRepository : uses
+ui.viewmodel.BookListViewModel --> repository.BookRepository : uses
+utils.sorting.SortingStrategy <|-- utils.sorting.NameAscSortingStrategy
+utils.sorting.SortingStrategy <|-- utils.sorting.NameDescSortingStrategy
+utils.sorting.SortingStrategy <|-- utils.sorting.NumAscSortingStrategy
+utils.sorting.SortingStrategy <|-- utils.sorting.NumDescSortingStrategy
+utils.sorting.SortingStrategy <|-- utils.sorting.OriginalSortingStrategy
+ui.viewmodel.FilterViewModel --> utils.sorting.SortingStrategy : uses
+ui.viewmodel.InputViewModel --> repository.BookRepository : uses
+ui.viewmodel.InputViewModel --> utils.CameraMenuProvider : uses
+utils.CameraMenuProvider --> ui.viewmodel.InputViewModel : uses
+
+@enduml
